@@ -10,15 +10,24 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
         marcaVehiculo: 'Audi',
         matricula: '',
         localidadOrigen: 'Montevideo',
-        localidadDestino: 'Artigas',
+        localidadDestino: 'Montevideo',
         barrioOrigen: '',
         barrioDestino: '',
         metodoPago: 'pendiente',
         importe: ''
     })
 
+    const [fotos, setFotos] = useState([])
+
+    const handleFileChange = (evento) => {
+        setFotos(Array.from(evento.target.files)) // Convertir FileList a Array 
+    }
+
     const handleSubmit = (eventoSubmit) => {
         eventoSubmit.preventDefault();
+
+        console.log('Fotos seleccionadas:', fotos);
+        
         
         // Validar marca de vehículo
         if (!formulario.marcaVehiculo) {
@@ -61,7 +70,7 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
             marcaVehiculo: 'Audi',
             matricula: '',
             localidadOrigen: 'Montevideo',
-            localidadDestino: 'Artigas',
+            localidadDestino: 'Montevideo',
             barrioOrigen: '',
             barrioDestino: '',
             metodoPago: 'pendiente',
@@ -97,10 +106,10 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
                             ...formulario, localidadDestino: valor
                         } ) }
                         onChangeBarrioOrigen= { (valor) => setFormulario( {
-                            ...formulario, barrioOrigen: valor
+                            ...formulario, barrioOrigen: valor.toUpperCase()
                         } ) }
                         onChangeBarrioDestino= { (valor) => setFormulario( {
-                            ...formulario, barrioDestino: valor
+                            ...formulario, barrioDestino: valor.toUpperCase()
                         } ) }
 
                     />
@@ -118,8 +127,29 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
 
                     />
                 </div>
+
+                <div className="mb-3 d-flex  justify-content-center">
+                        <input 
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleFileChange} 
+                        />
+                </div>
+
                 <div className="mb-3 d-flex justify-content-center">
                     <button type="submit"  className="btn btn-primary texts">Registrar Traslado</button>
+                </div>
+
+                <div className="mb-3 d-flex justify-content-center flex-wrap">
+                    {fotos.map((foto, idx) => (
+                        <img
+                            key={idx}
+                            src={URL.createObjectURL(foto)}
+                            alt={`Foto ${idx + 1}`}
+                            style={{ width: '100px', margin: '5px' }}
+                        />
+                    ))}
                 </div>
             </form>
 

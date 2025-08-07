@@ -36,7 +36,7 @@ export const InputVehiculo = ({ value, onChange, valueMatricula, onChangeMatricu
     const [esMatriculaValida, setEsMatriculaValida] = useState(true);
 
     const handleCambioMatricula = (valor) => {
-        onChangeMatricula(valor);
+        onChangeMatricula(valor.toUpperCase());
         
         // Validar solo si tiene algo escrito
         if (valor.length > 0) {

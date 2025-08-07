@@ -1,10 +1,9 @@
-import logo from '../../public/logo.png'
 export const Header = ({ vistaActual, onCambiarVista }) => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light nav-color-custom">
             <div className="container-fluid">
                 <a className="navbar-brand d-flex align-items-center" href="#">
-                    <img src={logo} alt="Logo" height="100rem"/>
+                    <img src="./logo.png" alt="Logo" height="60px" className="me-2"/>
                 </a>
 
                 <button 

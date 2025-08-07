@@ -1,4 +1,4 @@
-import logo from '../../public/image/logo.png'
+import logo from '../../public/logo.png'
 export const Header = ({ vistaActual, onCambiarVista }) => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light nav-color-custom">

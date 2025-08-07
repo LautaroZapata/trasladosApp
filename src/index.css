@@ -1,0 +1,48 @@
+body {
+    background-color: #111111;
+    color: #fff;
+}
+
+
+.titles {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+}
+
+.subtitles {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+}
+
+.texts {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+}
+
+
+
+
+.titleContainer {
+    height: 10rem;
+    width: 100%;
+    text-align: center;
+    margin-top: 5rem;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+.cardTraslado {
+    background-color: #f8f8f8;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    color: #000;
+    width: 20rem;
+}

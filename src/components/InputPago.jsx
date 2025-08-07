@@ -9,7 +9,7 @@ export const InputPago = ({ valuePago, valueImporte, onChangePago, onChangeImpor
                 <option value="transferencia">Transferencia</option>
             </select>
             <input 
-                type="text" 
+                type="number" 
                 className="form-control w-50 text-center mt-2"
                 placeholder="Monto"
                 required

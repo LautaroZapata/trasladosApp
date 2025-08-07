@@ -20,8 +20,8 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
         onRegistrarTraslado(formulario); // Llamar a la función para registrar el traslado
         setFormulario({
             tipoVehiculo: '',
-            localidadOrigen: '',
-            localidadDestino: '',
+            localidadOrigen: 'Montevideo',
+            localidadDestino: 'Artigas',
             barrio: '',
             metodoPago: 'pendiente',
             importe: ''

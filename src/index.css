@@ -9,14 +9,10 @@ body {
     font-weight: 700;
 }
 
-.subtitles {
-    font-family: "Montserrat", sans-serif;
-    font-weight: 500;
-}
 
 .texts {
     font-family: "Montserrat", sans-serif;
-    font-weight: 300;
+    font-weight: 500;
 }
 
 
@@ -46,3 +42,18 @@ body {
     color: #000;
     width: 20rem;
 }
+
+.nav-color-custom {
+    background-color: #f8f8f8;
+}
+
+/* Alineación space-around para el navbar */
+/* .nav-color-custom .container-fluid {
+    justify-content: space-around !important;
+} */
+
+/* O si querés space-between */
+.nav-color-custom .container-fluid {
+    justify-content: space-between !important;
+}
+

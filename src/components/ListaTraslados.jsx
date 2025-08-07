@@ -1,8 +1,10 @@
-export const ListaTraslados = ({ traslados, onActualizarPago }) => {
-    console.log(traslados);
-
+export const ListaTraslados = ({ traslados, onActualizarPago, onEliminarTraslado }) => {
     const handleCambiarPago = (trasladoId, nuevoMetodo) => {
         onActualizarPago(trasladoId, nuevoMetodo);
+    };
+
+    const handleEliminar = (trasladoId) => {
+        onEliminarTraslado(trasladoId);
     };
 
     return (
@@ -25,20 +27,28 @@ export const ListaTraslados = ({ traslados, onActualizarPago }) => {
                                         <li>Método de Pago: <b>{traslado.metodoPago}</b></li>
                                         <li>Importe: <b>${traslado.importe}</b></li>
                                     </ul>
-                                    {traslado.metodoPago === 'pendiente' ? (
-                                        <select
-                                            value={traslado.metodoPago}
-                                            onChange={(e) => handleCambiarPago(traslado.id, e.target.value)}
-                                            className="form-select form-select-sm"
+                                    <div className="d-flex justify-content-between mt-2">
+                                        {traslado.metodoPago === 'pendiente' ? (
+                                            <select
+                                                value={traslado.metodoPago}
+                                                onChange={(e) => handleCambiarPago(traslado.id, e.target.value)}
+                                                className="form-select form-select-sm"
+                                            >
+                                                <option value="pendiente">Pago pendiente</option>
+                                                <option value="efectivo">Efectivo</option>
+                                                <option value="credito">Crédito</option>
+                                                <option value="transferencia">Transferencia</option>
+                                            </select>
+                                        ) : (
+                                            <span className="badge bg-success">{traslado.metodoPago.toUpperCase()}</span>
+                                        )}
+                                        <button
+                                            onClick={() => handleEliminar(traslado.id)}
+                                            className="btn btn-danger btn-sm"
                                         >
-                                            <option value="pendiente">Pago pendiente</option>
-                                            <option value="efectivo">Efectivo</option>
-                                            <option value="credito">Crédito</option>
-                                            <option value="transferencia">Transferencia</option>
-                                        </select>
-                                    ) : (
-                                        <span className="badge bg-success">{traslado.metodoPago.toUpperCase()}</span>
-                                    )}
+                                            ⚠️ Eliminar
+                                        </button>
+                                    </div>
                                 </div>
                             ))
                         )

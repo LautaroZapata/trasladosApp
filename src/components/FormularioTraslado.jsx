@@ -2,6 +2,7 @@ import { useState } from "react"
 import { InputLocalidad } from "./InputLocalidad"
 import { InputPago } from "./InputPago"
 import { InputVehiculo } from "./InputVehiculo"
+import { validarMatricula } from "../utils/validacionMatricula"
 
 export const FormularioTraslado = ({onRegistrarTraslado}) => {
 
@@ -18,8 +19,44 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
 
     const handleSubmit = (eventoSubmit) => {
         eventoSubmit.preventDefault();
-        console.log('Datos del formulario:', formulario);
-        onRegistrarTraslado(formulario); // Llamar a la función para registrar el traslado
+        
+        // Validar marca de vehículo
+        if (!formulario.marcaVehiculo) {
+            alert('Por favor selecciona una marca de vehículo');
+            return;
+        }
+        
+        // Validar matrícula
+        if (!formulario.matricula) {
+            alert('Por favor ingresa la matrícula');
+            return;
+        }
+        
+        // Validar formato de matrícula
+        if (!validarMatricula(formulario.matricula)) {
+            alert('La matrícula debe tener el formato: ABC1234 (3 letras + 4 números)');
+            return;
+        }
+        
+        // Validar localidades
+        if (!formulario.localidadOrigen) {
+            alert('Por favor selecciona una localidad de origen');
+            return;
+        }
+        
+        if (!formulario.localidadDestino) {
+            alert('Por favor selecciona una localidad de destino');
+            return;
+        }
+        
+        // Validar importe
+        if (!formulario.importe) {
+            alert('Por favor ingresa un importe');
+            return;
+        }
+        
+        // Si todas las validaciones pasan:
+        onRegistrarTraslado(formulario);
         setFormulario({
             marcaVehiculo: 'Audi',
             matricula: '',
@@ -29,11 +66,8 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
             barrioDestino: '',
             metodoPago: 'pendiente',
             importe: ''
-        })
+        });
     }
-
-
-    
 
     return (
         <>
@@ -85,7 +119,7 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
                     />
                 </div>
                 <div className="mb-3 d-flex justify-content-center">
-                    <button type="submit"  className="btn btn-primary">Registrar Traslado</button>
+                    <button type="submit"  className="btn btn-primary texts">Registrar Traslado</button>
                 </div>
             </form>
 

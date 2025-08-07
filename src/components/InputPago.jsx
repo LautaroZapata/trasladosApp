@@ -1,7 +1,7 @@
 export const InputPago = ({ valuePago, valueImporte, onChangePago, onChangeImporte }) => {
     return (
         <>
-            <select name="opcionPago" className="form-select w-50 text-center mt-5" required value={valuePago} onChange={(e) => onChangePago(e.target.value)}>
+            <select name="opcionPago" className="form-select w-50 text-center mt-5 texts" required value={valuePago} onChange={(e) => onChangePago(e.target.value)}>
                 <option defaultChecked value="pendiente">Pago pendiente</option>
                 <option value="efectivo">Efectivo</option>
                 <option value="credito">Crédito</option>
@@ -11,7 +11,7 @@ export const InputPago = ({ valuePago, valueImporte, onChangePago, onChangeImpor
                 type="number" 
                 inputMode="numeric"
                 pattern="[0-9]*"
-                className="form-control w-50 text-center mt-2"
+                className="form-control w-50 text-center mt-2 texts"
                 placeholder="Monto"
                 required
                 value={valueImporte}

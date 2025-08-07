@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { FormularioTraslado } from "./components/FormularioTraslado"
 import { ListaTraslados } from "./components/ListaTraslados"
+import { Header } from "./components/Header"  // ← Agregar import
 
 export const App = () => {
-
     const [traslados, setTraslados] = useState([])
+    const [vistaActual, setVistaActual] = useState('formulario');
 
     const registrarTraslado = (nuevoTraslado) => {
         const trasladoIdDate = {
@@ -24,39 +25,34 @@ export const App = () => {
         ));
     };
 
-    const [vistaActual, setVistaActual] = useState('formulario'); // 'formulario' o 'lista'
+    const eliminarTraslado = (id) => {
+        const confirmar = window.confirm('Deseas eliminar?');
+        if (confirmar) setTraslados(traslados.filter(traslado => traslado.id !== id));
+    }
 
-
-
-    const handleCambiarVista = () => {
-        setVistaActual(vistaActual === 'formulario' ? 'lista' : 'formulario');
+    const handleCambiarVista = (nuevaVista) => {  // ← Modificar para recibir parámetro
+        setVistaActual(nuevaVista);
     };
 
     return (
         <>
-            <div className="titleContainer">
-                <h1 className="titles" id="titulo">Traslados App</h1>
-            </div>
+            {/* Agregar Header */}
+            <Header vistaActual={vistaActual} onCambiarVista={handleCambiarVista} />
             
-            {/* Mostrar formulario solo si vistaActual es 'formulario' */}
             {vistaActual === 'formulario' && (
-                <div className="container d-flex justify-content-center align-items-center fade-in">
+                <div className="container d-flex justify-content-center align-items-center fade-in mt-4">
                     <FormularioTraslado onRegistrarTraslado={registrarTraslado}/>
                 </div>
             )}
-            
-            <div className="container d-flex justify-content-center align-items-center">
-                <button onClick={handleCambiarVista} className='btn btn-warning mt-3'>
-                    {vistaActual === 'formulario' ? 'Ver Traslados' : 'Volver al Formulario'}
-                </button>
-            </div>
 
-            {/* Mostrar lista solo si vistaActual es 'lista' */}
             {vistaActual === 'lista' && 
-                <ListaTraslados 
-                    traslados={traslados} 
-                    onActualizarPago={actualizarPagoTraslado} 
-                />
+                <div className="mt-4">
+                    <ListaTraslados 
+                        traslados={traslados} 
+                        onActualizarPago={actualizarPagoTraslado} 
+                        onEliminarTraslado={eliminarTraslado}
+                    />
+                </div>
             }
         </>
     )

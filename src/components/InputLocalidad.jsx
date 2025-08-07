@@ -12,7 +12,7 @@ export const InputLocalidad = ({ valueOrigen, valueDestino, valueBarrioOrigen, v
         <>
             <select
                 name="localidadOrigen"
-                className="form-select w-50 text-center mt-5"
+                className="form-select w-50 text-center mt-5 texts"
                 value={valueOrigen}
                 onChange={(e) => onChangeOrigen(e.target.value)}
                 required
@@ -27,7 +27,7 @@ export const InputLocalidad = ({ valueOrigen, valueDestino, valueBarrioOrigen, v
             <input
                 type="text"
                 placeholder="Barrio Origen"
-                className="form-control w-50 text-center mt-2"
+                className="form-control w-50 text-center mt-2 texts"
                 required
                 value={valueBarrioOrigen}
                 onChange={(e) => onChangeBarrioOrigen(e.target.value)}
@@ -35,7 +35,7 @@ export const InputLocalidad = ({ valueOrigen, valueDestino, valueBarrioOrigen, v
 
             <select
                 name="localidadDestino"
-                className="form-select w-50 text-center mt-5"
+                className="form-select w-50 text-center mt-5 texts"
                 value={valueDestino}                                   
                 onChange={(e) => onChangeDestino(e.target.value)}      
                 required
@@ -53,7 +53,7 @@ export const InputLocalidad = ({ valueOrigen, valueDestino, valueBarrioOrigen, v
             <input
                 type="text"
                 placeholder="Barrio Destino"
-                className="form-control w-50 text-center mt-2"
+                className="form-control w-50 text-center mt-2 texts"
                 required
                 value={valueBarrioDestino}
                 onChange={(e) => onChangeBarrioDestino(e.target.value)}

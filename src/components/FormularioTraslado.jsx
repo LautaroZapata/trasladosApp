@@ -19,8 +19,9 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
 
     const [fotos, setFotos] = useState([])
 
-    const handleFileChange = (evento) => {
-        setFotos(Array.from(evento.target.files)) // Convertir FileList a Array 
+    const handleFileChange = (e) => {
+        const nuevosArchivos = Array.from(e.target.files); // Convertir FileList a Array
+        setFotos(prevFotos => [...prevFotos, ...nuevosArchivos]); // Agregar nuevos archivos al estado
     }
 
     const handleSubmit = (eventoSubmit) => {

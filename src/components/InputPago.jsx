@@ -1,4 +1,3 @@
-
 export const InputPago = ({ valuePago, valueImporte, onChangePago, onChangeImporte }) => {
     return (
         <>
@@ -10,6 +9,8 @@ export const InputPago = ({ valuePago, valueImporte, onChangePago, onChangeImpor
             </select>
             <input 
                 type="number" 
+                inputMode="numeric"
+                pattern="[0-9]*"
                 className="form-control w-50 text-center mt-2"
                 placeholder="Monto"
                 required

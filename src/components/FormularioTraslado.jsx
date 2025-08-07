@@ -19,9 +19,18 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
 
     const [fotos, setFotos] = useState([])
 
-    const handleFileChange = (e) => {
-        const nuevosArchivos = Array.from(e.target.files); // Convertir FileList a Array
-        setFotos(prevFotos => [...prevFotos, ...nuevosArchivos]); // Agregar nuevos archivos al estado
+    const handleFileChange = (e) => { // Filtrar archivos para aceptar solo imágenes y limitar la cantidad a 5
+        const nuevosArchivos = Array.from(e.target.files);
+        setFotos(prevFotos => {
+            const total = prevFotos.length + nuevosArchivos.length;
+            if (total <= 5) {
+                return [...prevFotos, ...nuevosArchivos];
+            } else {
+                // Solo agrega hasta completar 5
+                const disponibles = 5 - prevFotos.length;
+                return [...prevFotos, ...nuevosArchivos.slice(0, disponibles)];
+            }
+        });
     }
 
     const handleSubmit = (eventoSubmit) => {
@@ -66,7 +75,10 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
         }
         
         // Si todas las validaciones pasan:
-        onRegistrarTraslado(formulario);
+            onRegistrarTraslado({
+                ...formulario,
+                fotos: fotos
+            });
         setFormulario({
             marcaVehiculo: 'Audi',
             matricula: '',

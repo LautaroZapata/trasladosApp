@@ -1,10 +1,23 @@
+import { useState } from "react";
+
 export const ListaTraslados = ({ traslados, onActualizarPago, onEliminarTraslado }) => {
+    
+    const [fotoSeleccionada, setFotoSeleccionada] = useState(null);
+
     const handleCambiarPago = (trasladoId, nuevoMetodo) => {
         onActualizarPago(trasladoId, nuevoMetodo);
     };
 
     const handleEliminar = (trasladoId) => {
         onEliminarTraslado(trasladoId);
+    };
+
+    const handleFotoClick = (foto) => {
+        setFotoSeleccionada(foto);
+    };
+
+    const handleCerrarModal = () => {
+        setFotoSeleccionada(null);
     };
 
     return (
@@ -14,14 +27,13 @@ export const ListaTraslados = ({ traslados, onActualizarPago, onEliminarTraslado
                 <div className="d-flex flex-column align-items-center">
                     {traslados.length === 0 ? (<p>No hay traslados registrados</p>) :
                         (
-                            traslados.map((traslado) => (
-                                <div key={traslado.id} className="cardTraslado mb-3 fade-in">
+                            traslados.map((traslado, idx) => (
+                                <div key={idx} className="cardTraslado mb-3 fade-in">
                                     <p>ID: {traslado.id}</p>
                                     <p>Fecha: {traslado.fecha}</p>
                                     <ul>
                                         <li>Vehículo: <b>{traslado.marcaVehiculo}</b></li>
                                         <li>Matricula: <b>{traslado.matricula}</b></li>
-
                                         <li>Origen: <b>{traslado.localidadOrigen}, {traslado.barrioOrigen}</b></li>
                                         <li>Destino: <b>{traslado.localidadDestino}, {traslado.barrioDestino}</b></li>
                                         <li>Método de Pago: <b>{traslado.metodoPago}</b></li>
@@ -49,12 +61,48 @@ export const ListaTraslados = ({ traslados, onActualizarPago, onEliminarTraslado
                                             ⚠️ Eliminar
                                         </button>
                                     </div>
+                                    <div>
+                                        {traslado.fotos && traslado.fotos.map((foto, fIdx) => (
+                                            <img
+                                                key={fIdx}
+                                                src={typeof foto === 'string' ? foto : URL.createObjectURL(foto)}
+                                                alt={`Foto ${fIdx + 1}`}
+                                                style={{ width: '100px', margin: '5px', cursor: 'pointer' }}
+                                                onClick={() => handleFotoClick(foto)}
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
                             ))
                         )
                     }
                 </div>
             </div>
+            {/* Modal para mostrar la foto en pantalla completa */}
+            {fotoSeleccionada && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100vw',
+                        height: '100vh',
+                        background: 'rgba(0,0,0,0.8)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 9999
+                    }}
+                    onClick={handleCerrarModal}
+                >
+                    <img
+                        src={typeof fotoSeleccionada === 'string' ? fotoSeleccionada : URL.createObjectURL(fotoSeleccionada)}
+                        alt="Foto en pantalla completa"
+                        style={{ maxWidth: '90vw', maxHeight: '90vh', borderRadius: '10px' }}
+                        onClick={e => e.stopPropagation()}
+                    />
+                </div>
+            )}
         </>
     )
 }

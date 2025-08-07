@@ -6,10 +6,12 @@ import { InputVehiculo } from "./InputVehiculo"
 export const FormularioTraslado = ({onRegistrarTraslado}) => {
 
     const [formulario, setFormulario] = useState({
-        tipoVehiculo: '',
+        marcaVehiculo: 'Audi',
+        matricula: '',
         localidadOrigen: 'Montevideo',
         localidadDestino: 'Artigas',
-        barrio: '',
+        barrioOrigen: '',
+        barrioDestino: '',
         metodoPago: 'pendiente',
         importe: ''
     })
@@ -19,10 +21,12 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
         console.log('Datos del formulario:', formulario);
         onRegistrarTraslado(formulario); // Llamar a la función para registrar el traslado
         setFormulario({
-            tipoVehiculo: '',
+            marcaVehiculo: 'Audi',
+            matricula: '',
             localidadOrigen: 'Montevideo',
             localidadDestino: 'Artigas',
-            barrio: '',
+            barrioOrigen: '',
+            barrioDestino: '',
             metodoPago: 'pendiente',
             importe: ''
         })
@@ -34,11 +38,15 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
     return (
         <>
             <form onSubmit={handleSubmit} className="mx-auto d-flex flex-column w-100">
-                <div className="mb-3 d-flex justify-content-center">
-                    <InputVehiculo 
-                        value={formulario.tipoVehiculo}
+                <div className="mb-3 d-flex justify-content-center flex-column align-items-center">
+                    <InputVehiculo
+                        value={formulario.marcaVehiculo}
                         onChange={(valor) => setFormulario({
-                            ...formulario, tipoVehiculo:valor
+                            ...formulario, marcaVehiculo:valor
+                        })}
+                        valueMatricula={formulario.matricula}
+                        onChangeMatricula={(valor) => setFormulario({
+                            ...formulario, matricula:valor
                         })}
                     />
                 </div>
@@ -46,15 +54,19 @@ export const FormularioTraslado = ({onRegistrarTraslado}) => {
                     <InputLocalidad
                         valueOrigen={formulario.localidadOrigen}
                         valueDestino={formulario.localidadDestino}
-                        valueBarrio={formulario.barrio}
+                        valueBarrioOrigen={formulario.barrioOrigen}
+                        valueBarrioDestino={formulario.barrioDestino}
                         onChangeOrigen= { (valor) => setFormulario( {
                             ...formulario, localidadOrigen: valor
                         } ) }
                         onChangeDestino= { (valor) => setFormulario( {
                             ...formulario, localidadDestino: valor
                         } ) }
-                        onChangeBarrio= { (valor) => setFormulario( {
-                            ...formulario, barrio: valor
+                        onChangeBarrioOrigen= { (valor) => setFormulario( {
+                            ...formulario, barrioOrigen: valor
+                        } ) }
+                        onChangeBarrioDestino= { (valor) => setFormulario( {
+                            ...formulario, barrioDestino: valor
                         } ) }
 
                     />

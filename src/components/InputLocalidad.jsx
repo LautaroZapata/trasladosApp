@@ -1,4 +1,4 @@
-export const InputLocalidad = ({ valueOrigen, valueDestino, valueBarrio ,onChangeOrigen, onChangeDestino, onChangeBarrio }) => {
+export const InputLocalidad = ({ valueOrigen, valueDestino, valueBarrioOrigen, valueBarrioDestino, onChangeOrigen, onChangeDestino, onChangeBarrioOrigen, onChangeBarrioDestino }) => {
 
     const departamentos = [
         'Artigas', 'Canelones', 'Cerro Largo', 'Colonia',
@@ -12,7 +12,7 @@ export const InputLocalidad = ({ valueOrigen, valueDestino, valueBarrio ,onChang
         <>
             <select
                 name="localidadOrigen"
-                className="form-select w-50 text-center mt-2"
+                className="form-select w-50 text-center mt-5"
                 value={valueOrigen}
                 onChange={(e) => onChangeOrigen(e.target.value)}
                 required
@@ -24,9 +24,18 @@ export const InputLocalidad = ({ valueOrigen, valueDestino, valueBarrio ,onChang
                 ))}
             </select>
 
+            <input
+                type="text"
+                placeholder="Barrio Origen"
+                className="form-control w-50 text-center mt-2"
+                required
+                value={valueBarrioOrigen}
+                onChange={(e) => onChangeBarrioOrigen(e.target.value)}
+            />
+
             <select
                 name="localidadDestino"
-                className="form-select w-50 text-center mt-2"
+                className="form-select w-50 text-center mt-5"
                 value={valueDestino}                                   
                 onChange={(e) => onChangeDestino(e.target.value)}      
                 required
@@ -39,13 +48,15 @@ export const InputLocalidad = ({ valueOrigen, valueDestino, valueBarrio ,onChang
                 ))}
             </select>
 
+            
+
             <input
                 type="text"
-                placeholder="Barrio"
+                placeholder="Barrio Destino"
                 className="form-control w-50 text-center mt-2"
                 required
-                value={valueBarrio}
-                onChange={(e) => onChangeBarrio(e.target.value)}
+                value={valueBarrioDestino}
+                onChange={(e) => onChangeBarrioDestino(e.target.value)}
             />
         </>
     )

@@ -2,7 +2,7 @@
 export const InputPago = ({ valuePago, valueImporte, onChangePago, onChangeImporte }) => {
     return (
         <>
-            <select name="opcionPago" className="form-select w-50 text-center" required value={valuePago} onChange={(e) => onChangePago(e.target.value)}>
+            <select name="opcionPago" className="form-select w-50 text-center mt-5" required value={valuePago} onChange={(e) => onChangePago(e.target.value)}>
                 <option defaultChecked value="pendiente">Pago pendiente</option>
                 <option value="efectivo">Efectivo</option>
                 <option value="credito">Crédito</option>

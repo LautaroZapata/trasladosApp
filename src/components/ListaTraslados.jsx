@@ -17,10 +17,11 @@ export const ListaTraslados = ({ traslados, onActualizarPago }) => {
                                     <p>ID: {traslado.id}</p>
                                     <p>Fecha: {traslado.fecha}</p>
                                     <ul>
-                                        <li>Vehículo: <b>{traslado.tipoVehiculo}</b></li>
-                                        <li>Localidad Origen: <b>{traslado.localidadOrigen}</b></li>
-                                        <li>Localidad Destino: <b>{traslado.localidadDestino}</b></li>
-                                        <li>Barrio: <b>{traslado.barrio}</b></li>
+                                        <li>Vehículo: <b>{traslado.marcaVehiculo}</b></li>
+                                        <li>Matricula: <b>{traslado.matricula}</b></li>
+
+                                        <li>Origen: <b>{traslado.localidadOrigen}, {traslado.barrioOrigen}</b></li>
+                                        <li>Destino: <b>{traslado.localidadDestino}, {traslado.barrioDestino}</b></li>
                                         <li>Método de Pago: <b>{traslado.metodoPago}</b></li>
                                         <li>Importe: <b>${traslado.importe}</b></li>
                                     </ul>

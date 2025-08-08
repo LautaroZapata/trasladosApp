@@ -20,7 +20,7 @@ export const Header = ({ vistaActual, onCambiarVista }) => {
 
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ms-auto">
-                        <li className="nav-item">
+                        <li className="nav-item mx-auto">
                             <button 
                                 className={`nav-link texts btn btn-link ${vistaActual === 'formulario' ? 'active' : ''}`}
                                 onClick={() => onCambiarVista('formulario')}
@@ -30,7 +30,7 @@ export const Header = ({ vistaActual, onCambiarVista }) => {
                                 📝 Nuevo Traslado
                             </button>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item mx-auto">
                             <button 
                                 className={`nav-link texts btn btn-link ${vistaActual === 'lista' ? 'active' : ''}`}
                                 onClick={() => onCambiarVista('lista')}
@@ -38,6 +38,16 @@ export const Header = ({ vistaActual, onCambiarVista }) => {
                                 data-bs-target="#navbarNav"
                             >
                                 📋 Ver Traslados
+                            </button>
+                        </li>
+                        <li className="nav-item mx-auto">
+                            <button 
+                                className={`nav-link texts btn btn-link ${vistaActual === 'gastos' ? 'active' : ''}`}
+                                onClick={() => onCambiarVista('gastos')}
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#navbarNav"
+                            >
+                                📊 Gastos
                             </button>
                         </li>
                     </ul>

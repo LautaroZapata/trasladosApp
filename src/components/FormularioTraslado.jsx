@@ -1,3 +1,4 @@
+// Importa los hooks y componentes necesarios de React y utilidades propias
 import { useState } from "react";
 import imageCompression from "browser-image-compression";
 import { InputLocalidad } from "./InputLocalidad";
@@ -7,7 +8,9 @@ import { validarFormularioTraslado } from "../utils/validacionesTraslado";
 import { subirFotosCloudinary } from "../utils/subidaFotosCloudinary";
 import { registrarTrasladoEnBdd } from "../utils/registrarTraslado";
 
+// Componente principal para registrar traslados
 export const FormularioTraslado = ( ) => {
+  // Estado para los datos del formulario
   const [formulario, setFormulario] = useState({
     marcaVehiculo: "Audi",
     matricula: "",
@@ -19,19 +22,24 @@ export const FormularioTraslado = ( ) => {
     importe: "",
   });
 
-  // Componente principal para registrar traslados
-  // Permite ingresar datos, subir fotos y guardar en Firestore
+  // Estado para las fotos seleccionadas
   const [fotos, setFotos] = useState([]);
+  // Estado para mostrar notificaciones al usuario
   const [notificacion, setNotificacion] = useState("");
+  // Estado para mostrar el popup de loading/spinner
+  const [loading, setLoading] = useState(false);
 
   // Maneja el cambio de archivos en el input de fotos, comprimiendo antes de guardar
+  // Limita a 5 imágenes y comprime cada una antes de guardarla
   const handleFileChange = async (e) => {
     const nuevosArchivos = Array.from(e.target.files);
+    // Opciones de compresión: calidad y tamaño máximo
     const options = {
-      maxSizeMB: 0.5,
-      maxWidthOrHeight: 1024,
+      maxSizeMB: 0.5, // máximo 0.5 MB por imagen
+      maxWidthOrHeight: 1024, // máximo 1024px de ancho o alto
       useWebWorker: true
     };
+    // Comprimir cada imagen antes de guardar
     const comprimidos = await Promise.all(
       nuevosArchivos.map(async (file) => {
         try {
@@ -59,34 +67,35 @@ export const FormularioTraslado = ( ) => {
     });
   };
 
+  // Maneja el envío del formulario
+  // Valida los datos, sube las fotos a Cloudinary, registra el traslado en Firestore y muestra loading/notificaciones
   const handleSubmit = async (eventoSubmit) => {
     eventoSubmit.preventDefault();
+    setLoading(true);
 
-    const error = validarFormularioTraslado(formulario); // Lo que hace esto es validar el formulario y devolver un mensaje de error si hay algo mal
+    // Validar los datos del formulario
+    const error = validarFormularioTraslado(formulario);
     if (error) {
       alert(error);
+      setLoading(false);
       return;
     }
 
+    // Subir las fotos a Cloudinary y obtener las URLs
     let urlsFotos = [];
     try {
       urlsFotos = await subirFotosCloudinary(fotos);
     } catch (error) {
       setNotificacion("Error al subir las fotos. Inténtalo de nuevo.");
       setTimeout(() => setNotificacion(""), 3000);
+      setLoading(false);
       return;
     }
 
-    // Creamos el objeto con los datos para registrar en la base de datos
-    const registrarTrasladoBdd = {
-      ...formulario, // Trae todos los campos del formulario
-      fotos: urlsFotos, // Agrega las URLs de las fotos
-      fechaRegistro: new Date().toLocaleDateString("es-UY"), // Agrega la fecha de registro
-    };
-
+    // Registrar el traslado en la base de datos (Firestore)
     try {
       await registrarTrasladoEnBdd(formulario, urlsFotos);
-
+      // Limpiar el formulario y mostrar notificación de éxito
       setFormulario({
         marcaVehiculo: "Audi",
         matricula: "",
@@ -97,6 +106,7 @@ export const FormularioTraslado = ( ) => {
         metodoPago: "pendiente",
         importe: "",
       });
+      setFotos([]);
       setNotificacion("¡Traslado registrado exitosamente!");
       setTimeout(() => setNotificacion(""), 3000);
     } catch (error) {
@@ -104,14 +114,17 @@ export const FormularioTraslado = ( ) => {
       setNotificacion("Error al registrar el traslado. Inténtalo de nuevo.");
       setTimeout(() => setNotificacion(""), 3000);
     }
+    setLoading(false);
   };
 
+  // Renderiza el formulario y los componentes de entrada
   return (
     <>
       <form
         onSubmit={handleSubmit}
         className="mx-auto d-flex flex-column w-100"
       >
+        {/* Inputs para vehículo */}
         <div className="mb-3 d-flex justify-content-center flex-column align-items-center">
           <InputVehiculo
             value={formulario.marcaVehiculo}
@@ -130,6 +143,7 @@ export const FormularioTraslado = ( ) => {
             }
           />
         </div>
+        {/* Inputs para localidades y barrios */}
         <div className="mb-3 d-flex flex-column align-items-center justify-content-center">
           <InputLocalidad
             valueOrigen={formulario.localidadOrigen}
@@ -162,6 +176,7 @@ export const FormularioTraslado = ( ) => {
             }
           />
         </div>
+        {/* Inputs para método de pago e importe */}
         <div className="mb-3 d-flex flex-column align-items-center justify-content-center">
           <InputPago
             valuePago={formulario.metodoPago}
@@ -181,6 +196,7 @@ export const FormularioTraslado = ( ) => {
           />
         </div>
 
+        {/* Input para subir fotos */}
         <div className="mb-3 d-flex  justify-content-center">
           <input
             type="file"
@@ -190,6 +206,7 @@ export const FormularioTraslado = ( ) => {
           />
         </div>
 
+        {/* Previsualización de fotos seleccionadas */}
         <div className="mb-3 d-flex justify-content-center flex-wrap">
           {fotos.map((foto, idx) => (
             <img
@@ -201,30 +218,26 @@ export const FormularioTraslado = ( ) => {
           ))}
         </div>
 
-        <div className="mb-3 d-flex justify-content-center">
-          <button type="submit" className="btn btn-primary texts">
-            Registrar Traslado
+        {/* Botón para registrar traslado */}
+        <div className="mb-5 d-flex justify-content-center">
+          <button type="submit" className="btn btn-primary texts" disabled={loading}>
+            {loading ? "Registrando..." : "Registrar Traslado"}
           </button>
         </div>
 
+        {/* Popup de loading/spinner mientras se procesa el registro */}
+        {loading && (
+          <div className="traslados-loading-overlay">
+            <div className="traslados-loading-popup">
+              <span className="spinner-border" role="status" aria-hidden="true" style={{width: "3rem", height: "3rem"}}></span>
+              <span className="traslados-loading-text">Procesando registro...</span>
+            </div>
+          </div>
+        )}
+
+        {/* Notificación de éxito o error */}
         {notificacion && (
-          <div
-            style={{
-              position: "fixed",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              background: "#d4edda",
-              color: "#155724",
-              padding: "18px 40px",
-              borderRadius: "10px",
-              boxShadow: "0 2px 12px rgba(0,0,0,0.18)",
-              zIndex: 9999,
-              fontWeight: "bold",
-              fontSize: "1.15rem",
-              textAlign: "center",
-            }}
-          >
+          <div className="traslados-notificacion">
             {notificacion}
           </div>
         )}

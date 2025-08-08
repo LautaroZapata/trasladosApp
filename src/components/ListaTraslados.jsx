@@ -1,15 +1,64 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { db } from "../services/firebase";
 
-export const ListaTraslados = ({ traslados, onActualizarPago, onEliminarTraslado }) => {
+// Componente que muestra la lista de traslados obtenidos de Firestore
+export const ListaTraslados = ({ onActualizarPago, onEliminarTraslado }) => {
     
+    // Estado para la lista de traslados
+    const [traslados, setTraslados] = useState([]);
+    // Estado para la foto seleccionada en el modal
     const [fotoSeleccionada, setFotoSeleccionada] = useState(null);
+    // Al montar el componente, carga los traslados desde Firestore
+    useEffect(() => {
+        const cargarTraslados = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "traslados"));
+                const trasladosFirestore = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                setTraslados(trasladosFirestore);
+            } catch (error) {
+                console.error("Error al cargar traslados:", error);
+            }
+        };
+        cargarTraslados();
+    }, []);
 
-    const handleCambiarPago = (trasladoId, nuevoMetodo) => {
-        onActualizarPago(trasladoId, nuevoMetodo);
+    // Actualiza el método de pago en Firestore y refresca la lista
+    const handleCambiarPago = async (trasladoId, nuevoMetodo) => {
+        try {
+            const trasladoRef = doc(db, "traslados", trasladoId);
+            await updateDoc(trasladoRef, { metodoPago: nuevoMetodo });
+            // Refresca la lista después de actualizar
+            const querySnapshot = await getDocs(collection(db, "traslados"));
+            const trasladosFirestore = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setTraslados(trasladosFirestore);
+        } catch (error) {
+            console.error("Error al actualizar método de pago:", error);
+        }
     };
 
-    const handleEliminar = (trasladoId) => {
-        onEliminarTraslado(trasladoId);
+    // Elimina el traslado de Firestore y refresca la lista
+    const handleEliminar = async (trasladoId) => {
+        const confirmar = window.confirm("¿Estás seguro que querés eliminar este traslado? Esta acción no se puede deshacer.");
+        if (!confirmar) return;
+        try {
+            await deleteDoc(doc(db, "traslados", trasladoId));
+            // Refresca la lista después de eliminar
+            const querySnapshot = await getDocs(collection(db, "traslados"));
+            const trasladosFirestore = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setTraslados(trasladosFirestore);
+        } catch (error) {
+            console.error("Error al eliminar traslado:", error);
+        }
     };
 
         return (

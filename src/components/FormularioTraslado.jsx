@@ -1,10 +1,13 @@
 import { useState } from "react";
+import imageCompression from "browser-image-compression";
 import { InputLocalidad } from "./InputLocalidad";
 import { InputPago } from "./InputPago";
 import { InputVehiculo } from "./InputVehiculo";
-import { validarMatricula } from "../utils/validacionMatricula";
+import { validarFormularioTraslado } from "../utils/validacionesTraslado";
+import { subirFotosCloudinary } from "../utils/subidaFotosCloudinary";
+import { registrarTrasladoEnBdd } from "../utils/registrarTraslado";
 
-export const FormularioTraslado = ({ onRegistrarTraslado }) => {
+export const FormularioTraslado = ( ) => {
   const [formulario, setFormulario] = useState({
     marcaVehiculo: "Audi",
     matricula: "",
@@ -16,84 +19,91 @@ export const FormularioTraslado = ({ onRegistrarTraslado }) => {
     importe: "",
   });
 
+  // Componente principal para registrar traslados
+  // Permite ingresar datos, subir fotos y guardar en Firestore
   const [fotos, setFotos] = useState([]);
   const [notificacion, setNotificacion] = useState("");
 
-  const handleFileChange = (e) => {
-    // Filtrar archivos para aceptar solo imágenes y limitar la cantidad a 5
+  // Maneja el cambio de archivos en el input de fotos, comprimiendo antes de guardar
+  const handleFileChange = async (e) => {
     const nuevosArchivos = Array.from(e.target.files);
+    const options = {
+      maxSizeMB: 0.5,
+      maxWidthOrHeight: 1024,
+      useWebWorker: true
+    };
+    const comprimidos = await Promise.all(
+      nuevosArchivos.map(async (file) => {
+        try {
+          const compressedBlob = await imageCompression(file, options);
+          // Convertir Blob a File si es necesario
+          if (compressedBlob instanceof File) {
+            return compressedBlob;
+          } else {
+            return new File([compressedBlob], file.name, { type: compressedBlob.type });
+          }
+        } catch (err) {
+          console.error("Error al comprimir imagen:", err);
+          return file;
+        }
+      })
+    );
     setFotos((prevFotos) => {
-      const total = prevFotos.length + nuevosArchivos.length;
+      const total = prevFotos.length + comprimidos.length;
       if (total <= 5) {
-        return [...prevFotos, ...nuevosArchivos];
+        return [...prevFotos, ...comprimidos];
       } else {
-        // Solo agrega hasta completar 5
         const disponibles = 5 - prevFotos.length;
-        return [...prevFotos, ...nuevosArchivos.slice(0, disponibles)];
+        return [...prevFotos, ...comprimidos.slice(0, disponibles)];
       }
     });
   };
 
-  const handleSubmit = (eventoSubmit) => {
+  const handleSubmit = async (eventoSubmit) => {
     eventoSubmit.preventDefault();
 
-    console.log("Fotos seleccionadas:", fotos);
-
-    // Validar marca de vehículo
-    if (!formulario.marcaVehiculo) {
-      alert("Por favor selecciona una marca de vehículo");
+    const error = validarFormularioTraslado(formulario); // Lo que hace esto es validar el formulario y devolver un mensaje de error si hay algo mal
+    if (error) {
+      alert(error);
       return;
     }
 
-    // Validar matrícula
-    if (!formulario.matricula) {
-      alert("Por favor ingresa la matrícula");
+    let urlsFotos = [];
+    try {
+      urlsFotos = await subirFotosCloudinary(fotos);
+    } catch (error) {
+      setNotificacion("Error al subir las fotos. Inténtalo de nuevo.");
+      setTimeout(() => setNotificacion(""), 3000);
       return;
     }
 
-    // Validar formato de matrícula
-    if (!validarMatricula(formulario.matricula)) {
-      alert(
-        "La matrícula debe tener el formato: ABC1234 (3 letras + 4 números)"
-      );
-      return;
-    }
+    // Creamos el objeto con los datos para registrar en la base de datos
+    const registrarTrasladoBdd = {
+      ...formulario, // Trae todos los campos del formulario
+      fotos: urlsFotos, // Agrega las URLs de las fotos
+      fechaRegistro: new Date().toLocaleDateString("es-UY"), // Agrega la fecha de registro
+    };
 
-    // Validar localidades
-    if (!formulario.localidadOrigen) {
-      alert("Por favor selecciona una localidad de origen");
-      return;
-    }
+    try {
+      await registrarTrasladoEnBdd(formulario, urlsFotos);
 
-    if (!formulario.localidadDestino) {
-      alert("Por favor selecciona una localidad de destino");
-      return;
+      setFormulario({
+        marcaVehiculo: "Audi",
+        matricula: "",
+        localidadOrigen: "Montevideo",
+        localidadDestino: "Montevideo",
+        barrioOrigen: "",
+        barrioDestino: "",
+        metodoPago: "pendiente",
+        importe: "",
+      });
+      setNotificacion("¡Traslado registrado exitosamente!");
+      setTimeout(() => setNotificacion(""), 3000);
+    } catch (error) {
+      console.error("Error al registrar:", error);
+      setNotificacion("Error al registrar el traslado. Inténtalo de nuevo.");
+      setTimeout(() => setNotificacion(""), 3000);
     }
-
-    // Validar importe
-    if (!formulario.importe) {
-      alert("Por favor ingresa un importe");
-      return;
-    }
-
-    // Si todas las validaciones pasan:
-    onRegistrarTraslado({
-      ...formulario,
-      fotos: fotos,
-    });
-    setFormulario({
-      marcaVehiculo: "Audi",
-      matricula: "",
-      localidadOrigen: "Montevideo",
-      localidadDestino: "Montevideo",
-      barrioOrigen: "",
-      barrioDestino: "",
-      metodoPago: "pendiente",
-      importe: "",
-    });
-    setFotos([]);
-    setNotificacion("¡Traslado registrado exitosamente!");
-    setTimeout(() => setNotificacion(""), 3000);
   };
 
   return (

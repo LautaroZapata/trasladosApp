@@ -1,15 +1,15 @@
 // Recibe un archivo de imagen y lo sube a Cloudinary
 // Devuelve la URL segura de la imagen subida
 export async function subirImagenACloudinary(file) {
-  const url = "https://api.cloudinary.com/v1_1/dam1rxm52/upload";
-  // URL de la API de Cloudinary (cambiar dam1rxm52 por tu cloud name si es necesario)
+  const url = `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/upload`;
+  // URL de la API de Cloudinary
   const formData = new FormData();
   // Prepara los datos para enviar a Cloudinary
   formData.append("file", file);
-  formData.append("upload_preset", "traslados_unsigned");
+  formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
 
   formData.append("file", file); // Archivo de imagen
-  formData.append("upload_preset", "traslados_unsigned"); // Preset unsigned configurado en Cloudinary
+  formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET); // Preset unsigned configurado en Cloudinary
   try {
   // Realiza la petición POST a Cloudinary
     const response = await fetch(url, {

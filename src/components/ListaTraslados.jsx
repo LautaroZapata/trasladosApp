@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
 import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../services/firebase";
+import { ExportarTraslados } from "./ButtonCsv";
 
 // Componente que muestra la lista de traslados obtenidos de Firestore
-export const ListaTraslados = ({ onActualizarPago, onEliminarTraslado }) => {
-    
+export const ListaTraslados = () => {
+
     // Estado para la lista de traslados
     const [traslados, setTraslados] = useState([]);
+
     // Estado para la foto seleccionada en el modal
     const [fotoSeleccionada, setFotoSeleccionada] = useState(null);
-    // Al montar el componente, carga los traslados desde Firestore
-    useEffect(() => {
+
+
+    useEffect(() => { // Se usa useEffect por que se ejecuta una vez al montar el componente
         const cargarTraslados = async () => {
             try {
                 const querySnapshot = await getDocs(collection(db, "traslados"));
@@ -61,90 +64,80 @@ export const ListaTraslados = ({ onActualizarPago, onEliminarTraslado }) => {
         }
     };
 
-        return (
-            <>
-                <div>
-                    <h2 className="text-center">Lista de Traslados</h2>
-                    <div className="d-flex flex-column align-items-center">
-                        {traslados.length === 0 ? (<p>No hay traslados registrados</p>) :
-                            (
-                                traslados.map((traslado, idx) => (
-                                    <div key={idx} className="cardTraslado mb-3 fade-in">
-                                        <p>ID: {traslado.id}</p>
-                                        <p>Fecha: {traslado.fecha}</p>
-                                        <ul>
-                                            <li>Vehículo: <b>{traslado.marcaVehiculo}</b></li>
-                                            <li>Matricula: <b>{traslado.matricula}</b></li>
-                                            <li>Origen: <b>{traslado.localidadOrigen}, {traslado.barrioOrigen}</b></li>
-                                            <li>Destino: <b>{traslado.localidadDestino}, {traslado.barrioDestino}</b></li>
-                                            <li>Método de Pago: <b>{traslado.metodoPago}</b></li>
-                                            <li>Importe: <b>${traslado.importe}</b></li>
-                                        </ul>
-                                        <div className="d-flex justify-content-between mt-2">
-                                            {traslado.metodoPago === 'pendiente' ? (
-                                                <select
-                                                    value={traslado.metodoPago}
-                                                    onChange={(e) => handleCambiarPago(traslado.id, e.target.value)}
-                                                    className="form-select form-select-sm"
-                                                >
-                                                    <option value="pendiente">Pago pendiente</option>
-                                                    <option value="efectivo">Efectivo</option>
-                                                    <option value="credito">Crédito</option>
-                                                    <option value="transferencia">Transferencia</option>
-                                                </select>
-                                            ) : (
-                                                <span className="badge bg-success">{traslado.metodoPago.toUpperCase()}</span>
-                                            )}
-                                            <button
-                                                onClick={() => handleEliminar(traslado.id)}
-                                                className="btn btn-danger btn-sm"
+    return (
+        <>
+            <div className="d-flex flex-column">
+                <h2 className="text-center">Lista de Traslados</h2>
+                <ExportarTraslados traslados={traslados}  />
+                <div className="d-flex flex-column align-items-center">
+                    {traslados.length === 0 ? (<p>No hay traslados registrados</p>) :
+                        (
+                            traslados.map((traslado, idx) => (
+                                <div key={idx} className="cardTraslado mb-3 fade-in">
+                                    <p>ID: {traslado.id}</p>
+                                    <p>Fecha: {traslado.fecha}</p>
+                                    <ul>
+                                        <li>Vehículo: <b>{traslado.marcaVehiculo}</b></li>
+                                        <li>Matricula: <b>{traslado.matricula}</b></li>
+                                        <li>Origen: <b>{traslado.localidadOrigen}, {traslado.barrioOrigen}</b></li>
+                                        <li>Destino: <b>{traslado.localidadDestino}, {traslado.barrioDestino}</b></li>
+                                        <li>Método de Pago: <b>{traslado.metodoPago}</b></li>
+                                        <li>Importe: <b>${traslado.importe}</b></li>
+                                    </ul>
+                                    <div className="d-flex justify-content-between mt-2">
+                                        {traslado.metodoPago === 'pendiente' ? (
+                                            <select
+                                                value={traslado.metodoPago}
+                                                onChange={(e) => handleCambiarPago(traslado.id, e.target.value)}
+                                                className="form-select form-select-sm"
                                             >
-                                                ⚠️ Eliminar
-                                            </button>
-                                        </div>
-                                        {/* Galería de imágenes */}
-                                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', margin: '10px 0' }}>
-                                            {traslado.fotos && traslado.fotos.map((foto, fIdx) => (
-                                                <img
-                                                    key={fIdx}
-                                                    src={typeof foto === 'string' ? foto : URL.createObjectURL(foto)}
-                                                    alt={`Foto ${fIdx + 1}`}
-                                                    style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px', border: '2px solid #eee', cursor: 'pointer' }}
-                                                    onClick={() => setFotoSeleccionada(foto)}
-                                                />
-                                            ))}
-                                        </div>
+                                                <option value="pendiente">Pago pendiente</option>
+                                                <option value="efectivo">Efectivo</option>
+                                                <option value="credito">Crédito</option>
+                                                <option value="transferencia">Transferencia</option>
+                                            </select>
+                                        ) : (
+                                            <span className="badge bg-success">{traslado.metodoPago.toUpperCase()}</span>
+                                        )}
+                                        <button
+                                            onClick={() => handleEliminar(traslado.id)}
+                                            className="btn btn-danger btn-sm"
+                                        >
+                                            ⚠️ Eliminar
+                                        </button>
                                     </div>
-                                ))
-                            )
-                        }
-                    </div>
+                                    {/* Galería de imágenes */}
+                                    <div className="galeria-fotos">
+                                        {traslado.fotos && traslado.fotos.map((foto, fIdx) => (
+                                            <img
+                                                key={fIdx}
+                                                src={typeof foto === 'string' ? foto : URL.createObjectURL(foto)}
+                                                alt={`Foto ${fIdx + 1}`}
+                                                className="galeria-foto"
+                                                onClick={() => setFotoSeleccionada(foto)}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            ))
+                        )
+                    }
                 </div>
-                {/* Modal para mostrar la foto en pantalla completa */}
-                {fotoSeleccionada && (
-                    <div
-                        style={{
-                            position: 'fixed',
-                            top: 0,
-                            left: 0,
-                            width: '100vw',
-                            height: '100vh',
-                            background: 'rgba(0,0,0,0.8)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            zIndex: 9999
-                        }}
-                        onClick={() => setFotoSeleccionada(null)}
-                    >
-                        <img
-                            src={typeof fotoSeleccionada === 'string' ? fotoSeleccionada : URL.createObjectURL(fotoSeleccionada)}
-                            alt="Foto en pantalla completa"
-                            style={{ maxWidth: '90vw', maxHeight: '90vh', borderRadius: '10px' }}
-                            onClick={e => e.stopPropagation()}
-                        />
-                    </div>
-                )}
-            </>
-        )
+            </div>
+            {/* Modal para mostrar la foto en pantalla completa */}
+            {fotoSeleccionada && (
+                <div
+                    className="modal-overlay"
+                    onClick={() => setFotoSeleccionada(null)}
+                >
+                    <img
+                        src={typeof fotoSeleccionada === 'string' ? fotoSeleccionada : URL.createObjectURL(fotoSeleccionada)}
+                        alt="Foto en pantalla completa"
+                        className="modal-image"
+                        onClick={e => e.stopPropagation()}
+                    />
+                </div>
+            )}
+        </>
+    )
 }

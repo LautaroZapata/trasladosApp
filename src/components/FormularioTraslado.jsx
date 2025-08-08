@@ -56,7 +56,7 @@ export const FormularioTraslado = ( ) => {
         }
       })
     );
-    setFotos((prevFotos) => {
+    setFotos((prevFotos) => { // Actualiza el estado de fotos 
       const total = prevFotos.length + comprimidos.length;
       if (total <= 5) {
         return [...prevFotos, ...comprimidos];

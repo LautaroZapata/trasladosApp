@@ -9,7 +9,7 @@ export const ExportarTraslados = ({ traslados }) => {
         // Ajustá los campos según tu estructura real
         const headers = [
             'id',
-            'fecha',
+            'fechaRegistro',
             'marcaVehiculo',
             'matricula',
             'localidadOrigen',

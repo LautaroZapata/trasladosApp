@@ -58,44 +58,33 @@ export const ListaTraslados = () => {
         <>
             <div className="d-flex flex-column">
                 <h2 className="text-center">Lista de Traslados</h2>
-                <ExportarTraslados traslados={traslados}  />
-                <div className="d-flex flex-column align-items-center">
+                <ExportarTraslados traslados={traslados} />
+                <div className="d-flex flex-column align-items-center gap-3">
                     {traslados.length === 0 ? (<p>No hay traslados registrados</p>) :
                         (
                             traslados.map((traslado, idx) => (
-                                <div key={idx} className="cardTraslado mb-3 fade-in">
-                                    <p>ID: {traslado.id}</p>
-                                    <p>Fecha: {traslado.fechaRegistro}</p>
-                                    <ul>
-                                        <li>Vehículo: <b>{traslado.marcaVehiculo}</b></li>
-                                        <li>Matricula: <b>{traslado.matricula}</b></li>
-                                        <li>Origen: <b>{traslado.localidadOrigen}, {traslado.barrioOrigen}</b></li>
-                                        <li>Destino: <b>{traslado.localidadDestino}, {traslado.barrioDestino}</b></li>
-                                        <li>Método de Pago: <b>{traslado.metodoPago}</b></li>
-                                        <li>Importe: <b>${traslado.importe}</b></li>
-                                    </ul>
-                                    <div className="d-flex justify-content-between mt-2">
-                                        {traslado.metodoPago === 'pendiente' ? (
-                                            <select
-                                                value={traslado.metodoPago}
-                                                onChange={(e) => handleCambiarPago(traslado.id, e.target.value)}
-                                                className="form-select form-select-sm"
-                                            >
-                                                <option value="pendiente">Pago pendiente</option>
-                                                <option value="efectivo">Efectivo</option>
-                                                <option value="credito">Crédito</option>
-                                                <option value="transferencia">Transferencia</option>
-                                            </select>
-                                        ) : (
-                                            <span className="badge bg-success">{traslado.metodoPago.toUpperCase()}</span>
-                                        )}
-                                        <button
-                                            onClick={() => handleEliminar(traslado.id)}
-                                            className="btn btn-danger btn-sm"
-                                        >
-                                            ⚠️ Eliminar
-                                        </button>
+                                <div key={idx} className="cardTraslado fade-in">
+                                    <p className="textSmall">ID: {traslado.id}</p>
+                                    <div className="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <img src="/car.png" alt="car" height="20px" className="me-2"/>{traslado.marcaVehiculo}, <span className="textSmall"><b>{traslado.matricula}</b></span>
+                                        </div>
+                                        <div>
+                                            <img src="/date.png" alt="date" height="20px" className="me-2"/>{traslado.fechaRegistro}
+                                        </div>
                                     </div>
+                                    <div className="mb-2">
+                                        <div className="mb-2">
+                                            <img src="/location.png" alt="location" height="20px" className="me-2"/>{traslado.localidadOrigen}, {traslado.barrioOrigen}
+                                        </div>
+                                        <div>
+                                            <img src="/location_destino.png" alt="location" height="20px" className="me-2"/>{traslado.localidadDestino}, {traslado.barrioDestino}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <img src="/dollar.png" alt="dolar" height="20px" className="me-2"/> <b>${traslado.importe}</b>
+                                    </div>
+                                    
                                     {/* Galería de imágenes */}
                                     <div className="galeria-fotos">
                                         {traslado.fotos && traslado.fotos.map((foto, fIdx) => (
@@ -108,6 +97,30 @@ export const ListaTraslados = () => {
                                             />
                                         ))}
                                     </div>
+
+                                    <div className="d-flex justify-content-between my-3">
+                                        {traslado.metodoPago === 'pendiente' ? (
+                                            <select
+                                                value={traslado.metodoPago}
+                                                onChange={(e) => handleCambiarPago(traslado.id, e.target.value)}
+                                                className="form-select selectMetodoPago"
+                                            >
+                                                <option value="pendiente">Pago pendiente</option>
+                                                <option value="efectivo">Efectivo</option>
+                                                <option value="credito">Crédito</option>
+                                                <option value="transferencia">Transferencia</option>
+                                            </select>
+                                        ) : (
+                                            <span className="badge metodoPagoBadge my-auto p-2">{traslado.metodoPago.toUpperCase()}</span>
+                                        )}
+                                        <button
+                                            onClick={() => handleEliminar(traslado.id)}
+                                            className="btn btn-danger btnEliminar my-auto text-center"
+                                        >
+                                            ⚠️ Eliminar
+                                        </button>
+                                    </div>
+                                    
                                 </div>
                             ))
                         )

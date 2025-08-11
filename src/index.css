@@ -15,37 +15,17 @@ body {
   color: #fff;
   border: 1px solid #ff6f00;
 }
-
-.texts::placeholder {
-  color: #9b9b9b;
-}
-
+.texts::placeholder { color: #9b9b9b; }
 .texts:focus {
   background-color: #1a1a1a;
   border: 1px solid #ff6f00;
   box-shadow: none;
 }
 
-.titleContainer {
-  height: 5rem;
-  width: 100%;
-  text-align: center;
-  margin-top: 5rem;
-}
-
-.fade-in {
-  animation: fadeIn 0.5s ease-in;
-}
-
+.fade-in { animation: fadeIn 0.5s ease-in; }
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .cardTraslado {
@@ -56,46 +36,30 @@ body {
   width: 20rem;
 }
 
-.nav-color-custom {
-  background-color: #1a1a1a;
-}
+/* Navbar base */
+.nav-color-custom { background-color: #1a1a1a; }
+.nav-color-custom .container-fluid { justify-content: space-between !important; }
 
-/* Alineación space-around para el navbar */
-/* .nav-color-custom .container-fluid {
-    justify-content: space-around !important;
-} */
-
-/* O si querés space-between */
-.nav-color-custom .container-fluid {
-  justify-content: space-between !important;
-}
-
+/* Overlay / loading popup */
 .traslados-loading-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center;
   z-index: 9999;
 }
 .traslados-loading-popup {
   background: #fff;
   padding: 30px 50px;
   border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
   display: flex;
   flex-direction: column;
   align-items: center;
   color: #222;
 }
-.traslados-loading-popup .spinner-border {
-  color: #333 !important;
-  border-width: 0.35em;
-}
+.traslados-loading-popup .spinner-border { color: #333 !important; border-width: .35em; }
 .traslados-loading-text {
   margin-top: 18px;
   font-weight: bold;
@@ -103,30 +67,29 @@ body {
   color: #222;
 }
 
+/* Notificación */
 .traslados-notificacion {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
   background: #d4edda;
   color: #155724;
   padding: 18px 40px;
   border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
   z-index: 9999;
   font-weight: bold;
   font-size: 1.15rem;
   text-align: center;
 }
 
-/* Galería de fotos de traslados */
+/* Galería fotos */
 .galeria-fotos {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   margin: 10px 0;
 }
-
 .galeria-foto {
   width: 50px;
   height: 50px;
@@ -134,87 +97,119 @@ body {
   border-radius: 8px;
   border: 2px solid #eee;
   cursor: pointer;
-  transition: transform 0.15s ease;
+  transition: transform .15s ease;
 }
-.galeria-foto:hover {
-  transform: scale(1.05);
-}
+.galeria-foto:hover { transform: scale(1.05); }
 
-/* Modal de imagen */
+/* Modal imagen */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.8);
+  display: flex; align-items: center; justify-content: center;
   z-index: 9999;
   padding: 12px;
 }
-
 .modal-image {
   max-width: 90vw;
   max-height: 90vh;
   border-radius: 10px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 12px rgba(0,0,0,0.6);
 }
 
+/* Number input (oculta spinners WebKit) */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
+/* Botón hamburguesa (icono líneas naranjas) */
 .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,111,0,0.95)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22' /%3e%3c/svg%3e") !important;
 }
 
+.nav-toggler:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.nav-toggler-collapsed:focus{
+  outline: none;
+  box-shadow: none;
+}
+
+.navbar-toggler{
+  border: 1px solid #ff6f00;
+}
+
+/* (Si querés que el botón tenga borde visible, descomenta)
 .navbar-toggler {
   border: 2px solid #ff6f00;
   border-radius: 6px;
-  padding: 4px 8px;
+  padding: 6px 10px;
+  background: transparent;
 }
-
-/* Hover / focus */
 .navbar-toggler:hover,
-.navbar-toggler:focus {
-  border-color: #ff6f00;
-  box-shadow: none;
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler:not(.collapsed) { border-color: #ffa347; box-shadow:none; }
+*/
+
+/* Links del menú (sin bordes y texto blanco) */
+.navbar-nav .nav-link,
+.navbar-nav .btn-link {
+  color: #fff !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: .45rem .9rem;
+}
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus,
+.navbar-nav .nav-link:active,
+.navbar-nav .nav-link.active,
+.navbar-nav .btn-link:hover,
+.navbar-nav .btn-link:focus,
+.navbar-nav .btn-link:active {
+  color: #fff !important;
+  background: rgba(255,255,255,0.06);
+  text-decoration: none;
+}
+.navbar-nav .nav-link:focus-visible,
+.navbar-nav .btn-link:focus-visible {
   outline: none;
+  box-shadow: none;
 }
 
-/* Estado cuando el menú está abierto (Bootstrap añade .collapsed cuando está cerrado) */
-.navbar-toggler:not(.collapsed) {
-  border-color: #ffa347;
-}
-
-
-
-/* ...existing code... */
+/* Select con icono (vehículo, localidades, pago) */
 .select-with-icon { position: relative; display: inline-block; }
 .select-with-icon .select-leading-icon {
   position: absolute;
-  top: 50%; left: 10px;
+  top: 50%; left: 12px;
   transform: translateY(-50%);
+  display: flex; align-items: center;
   pointer-events: none;
-  color: #ff6f00;
-  font-size: 1rem;
+  height: 100%;
 }
-.select-with-icon select.form-select { padding-left: 2rem; }
-.select-with-icon.select-custom-arrow select {
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg stroke='%23ff6f00' fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 16px;
-  padding-right: 2rem;
+.select-with-icon .icon-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  display: block;
+}
+.select-with-icon select.form-select {
+  padding-left: 3rem;
+  height: 44px;
+  line-height: 44px;
+}
+@supports (-webkit-appearance: none) {
+  .select-with-icon select.form-select {
+    line-height: normal;
+    padding-top: .55rem;
+    padding-bottom: .55rem;
+  }
 }
 
-
-.icons {
-  filter: invert();
-}

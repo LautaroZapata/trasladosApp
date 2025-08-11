@@ -49,19 +49,20 @@ export const InputVehiculo = ({ value, onChange, valueMatricula, onChangeMatricu
 
     return (
         <>
-            {/* Select con icono */}
+            {/* Select con icono alineado verticalmente */}
             <div className="select-with-icon select-custom-arrow w-75 mb-2">
-                <span className="select-leading-icon"><img src="../../public/car.png" alt="wheel" height="25px" className="icons my-auto"/></span>
+                <span className="select-leading-icon">
+                    {/* Si car.png está en /public usa /car.png */}
+                    <img src="/car.png" alt="" className="icon-img" />
+                </span>
                 <select
                     name="marcaVehiculo"
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
-                    className="form-select text-center texts w-100 p-2"
+                    className="form-select text-center texts w-100"
                 >
-                    {marcas.map((marca) => (
-                        <option key={marca} value={marca}>
-                            {marca}
-                        </option>
+                    {marcas.map(marca => (
+                        <option key={marca} value={marca}>{marca}</option>
                     ))}
                 </select>
             </div>

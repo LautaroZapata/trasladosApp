@@ -4,7 +4,7 @@ export const InputPago = ({ valuePago, valueImporte, onChangePago, onChangeImpor
             {/* Select método de pago con un único icono */}
             <div className="select-with-icon select-custom-arrow w-75 mt-3 mb-2">
                 <span className="select-leading-icon">
-                    <img src="../../public/dollar.png" alt="dollar" className="icon-img" />
+                    <img src="/dollar.png" alt="dollar" className="icon-img" />
                 </span>
                 <select
                     name="opcionPago"

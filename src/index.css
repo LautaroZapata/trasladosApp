@@ -22,6 +22,38 @@ body {
   box-shadow: none;
 }
 
+/* Forzar color de texto y caret en inputs oscuros */
+.texts,
+.texts:focus {
+  color: #fff !important;
+  caret-color: #fff;
+}
+
+/* Selección de texto dentro del input */
+.texts::selection {
+  background: #ff6f00;
+  color: #fff;
+}
+
+/* Color del placeholder en foco (mantener legible) */
+.texts:focus::placeholder {
+  color: #9b9b9b;
+}
+
+/* Quitar fondo amarillo de autofill en Chrome */
+.texts:-webkit-autofill,
+.texts:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 30px #1a1a1a inset !important;
+  caret-color: #fff;
+}
+
+/* Edge / Firefox (por si aplica) */
+.texts:-internal-autofill-selected {
+  background-color: #1a1a1a !important;
+  color: #fff !important;
+}
+
 .fade-in { animation: fadeIn 0.5s ease-in; }
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(5px); }
@@ -211,5 +243,26 @@ input[type="number"]::-webkit-inner-spin-button {
     padding-top: .55rem;
     padding-bottom: .55rem;
   }
+}
+
+/* Forzar color naranja en todas las variantes del primary */
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:disabled,
+.btn-primary:focus:active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #ff6f00 !important;
+  border-color: #ff6f00 !important;
+  color: #fff !important;
+  box-shadow: none; /* o agrega sombra custom */
+}
+
+/* Opcional: color ligeramente más claro al hover */
+.btn-primary:hover {
+  background-color: #ff964a !important;
+  border-color: #ff964a !important;
 }
 

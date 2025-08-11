@@ -37,7 +37,7 @@ export const InputVehiculo = ({ value, onChange, valueMatricula, onChangeMatricu
 
     const handleCambioMatricula = (valor) => {
         onChangeMatricula(valor.toUpperCase());
-        
+
         // Validar solo si tiene algo escrito
         if (valor.length > 0) {
             setEsMatriculaValida(validarMatricula(valor));
@@ -46,28 +46,37 @@ export const InputVehiculo = ({ value, onChange, valueMatricula, onChangeMatricu
         }
     };
 
-    
+
     return (
         <>
-            <select name="marcaVehiculo" value={value} onChange={(e) => onChange(e.target.value)} className="form-select w-50 text-center mb-2 texts">
-                {marcas.map((marca) => (
-                    <option key={marca} value={marca}>
-                        {marca}
-                    </option>
-                ))}
-            </select>
-            
+            {/* Select con icono */}
+            <div className="select-with-icon select-custom-arrow w-75 mb-2">
+                <span className="select-leading-icon"><img src="../../public/car.png" alt="wheel" height="25px" className="icons my-auto"/></span>
+                <select
+                    name="marcaVehiculo"
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    className="form-select text-center texts w-100 p-2"
+                >
+                    {marcas.map((marca) => (
+                        <option key={marca} value={marca}>
+                            {marca}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             <input
                 type="text"
                 placeholder="Matrícula (ABC1234)"
-                className={`form-control texts w-50 text-center ${esMatriculaValida ? '' : 'is-invalid'}`}
+                className={`form-control texts w-75 text-center ${esMatriculaValida ? '' : 'is-invalid'}`}
                 name="matricula"
                 value={valueMatricula}
                 onChange={(e) => handleCambioMatricula(e.target.value)}
-                maxLength="7"  // Limitar a 7 caracteres
+                maxLength="7"
                 required
             />
-            
+
             {!esMatriculaValida && (
                 <div className="invalid-feedback d-block text-center texts">
                     Formato: 3 letras + 4 números (ej: ABC1234)

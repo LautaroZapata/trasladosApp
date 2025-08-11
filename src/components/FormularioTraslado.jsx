@@ -122,10 +122,10 @@ export const FormularioTraslado = ( ) => {
     <>
       <form
         onSubmit={handleSubmit}
-        className="mx-auto d-flex flex-column w-100"
+        className="mx-auto d-flex flex-column w-100 gap-3"
       >
         {/* Inputs para vehículo */}
-        <div className="mb-3 d-flex justify-content-center flex-column align-items-center">
+        <div className="mb-1 d-flex justify-content-center flex-column align-items-center">
           <InputVehiculo
             value={formulario.marcaVehiculo}
             onChange={(valor) =>
@@ -144,7 +144,7 @@ export const FormularioTraslado = ( ) => {
           />
         </div>
         {/* Inputs para localidades y barrios */}
-        <div className="mb-3 d-flex flex-column align-items-center justify-content-center">
+        <div className="mb-1 d-flex flex-column align-items-center justify-content-center gap-2">
           <InputLocalidad
             valueOrigen={formulario.localidadOrigen}
             valueDestino={formulario.localidadDestino}
@@ -177,7 +177,7 @@ export const FormularioTraslado = ( ) => {
           />
         </div>
         {/* Inputs para método de pago e importe */}
-        <div className="mb-3 d-flex flex-column align-items-center justify-content-center">
+        <div className="mb-1 d-flex flex-column align-items-center justify-content-center">
           <InputPago
             valuePago={formulario.metodoPago}
             valueImporte={formulario.importe}
@@ -197,7 +197,7 @@ export const FormularioTraslado = ( ) => {
         </div>
 
         {/* Input para subir fotos */}
-        <div className="mb-3 d-flex  justify-content-center">
+        <div className="my-3 d-flex  justify-content-center">
           <input
             type="file"
             accept="image/*"
@@ -219,8 +219,8 @@ export const FormularioTraslado = ( ) => {
         </div>
 
         {/* Botón para registrar traslado */}
-        <div className="mb-5 d-flex justify-content-center">
-          <button type="submit" className="btn btn-primary texts" disabled={loading}>
+        <div className="mb-3 d-flex justify-content-center">
+          <button type="submit" className="btn btn-primary texts p-3" disabled={loading}>
             {loading ? "Registrando..." : "Registrar Traslado"}
           </button>
         </div>

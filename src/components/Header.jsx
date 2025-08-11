@@ -3,7 +3,7 @@ export const Header = ({ vistaActual, onCambiarVista }) => {
         <nav className="navbar navbar-expand-lg navbar-light nav-color-custom">
             <div className="container-fluid">
                 <a className="navbar-brand d-flex align-items-center" href="#">
-                    <img src="./logo.png" alt="Logo" height="60px" className="me-2"/>
+                    <img src="./logo2.png" alt="Logo" height="100px" className="me-2"/>
                 </a>
 
                 <button 

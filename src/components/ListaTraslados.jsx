@@ -75,7 +75,7 @@ export const ListaTraslados = () => {
                             traslados.map((traslado, idx) => (
                                 <div key={idx} className="cardTraslado mb-3 fade-in">
                                     <p>ID: {traslado.id}</p>
-                                    <p>Fecha: {traslado.fecha}</p>
+                                    <p>Fecha: {traslado.fechaRegistro}</p>
                                     <ul>
                                         <li>Vehículo: <b>{traslado.marcaVehiculo}</b></li>
                                         <li>Matricula: <b>{traslado.matricula}</b></li>

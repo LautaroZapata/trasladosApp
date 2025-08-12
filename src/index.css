@@ -365,7 +365,10 @@ textarea{
   opacity: 1;
 }
 
-.gastosWrapper { position: relative; }
+.gastosWrapper { 
+  position: relative;
+  
+}
 .gastosCarousel {
   display: flex;
   gap: 1rem;
@@ -394,14 +397,11 @@ textarea{
   position: relative;
   box-shadow: 0 0 12px -6px rgba(0,0,0,.8);
   transition: transform .25s ease, border-color .25s;
+  /* user-select: none;
+  pointer-events: none; */
 }
-.gastoCard:hover {
-  transform: translateY(-4px);
-  border-color: #ff6f00;
-}
-.iconOrange {
-  filter: brightness(0) saturate(100%) invert(51%) sepia(92%) saturate(2918%) hue-rotate(2deg) brightness(102%) contrast(103%);
-}
+
+
 @media (max-width: 480px) {
   .gastoCard { flex: 0 0 80%; }
 }
@@ -457,3 +457,8 @@ h5 {
   height: 20px;
   width: 20px;
 }
+
+.btnVerGastos {
+  color: #ff6f00 !important;
+}
+
